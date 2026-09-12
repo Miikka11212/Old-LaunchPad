@@ -1,0 +1,414 @@
+{
+  "entries" : [
+    {
+      "app" : {
+        "_0" : "\/Applications\/Adobe Acrobat DC\/Adobe Acrobat.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/App Store.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Books.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Calculator.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Calendar.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/ChatGPT.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/Chill with You Lo-Fi Story.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Clock.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Visual Studio Code.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Contacts.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/Cyberpunk 2077.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/Desktop Mate.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Discord.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/FaceTime.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Library\/CoreServices\/Finder.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/FindMy.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Freeform.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Games.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/GarageBand.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/GIRLS MADE PUDDING.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Google Chrome.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Home.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Image Playground.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/iMovie.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/iPhone Mirroring.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Journal.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Keynote.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/LM Studio.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Mail.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Maps.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Messages.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Microsoft 365 Copilot Shim.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Microsoft Edge.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Microsoft Excel.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Microsoft OneNote.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Microsoft Outlook.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Microsoft PowerPoint.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Microsoft Teams.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Microsoft Word.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/Moonless Moon.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/Muse Dash.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/Muse Dash.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Music.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/NeteaseMusic.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/News.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Notes.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Numbers.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Pages.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Passwords.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Phone.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Photo Booth.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Photos.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/PlayCover.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Podcasts.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/QQ.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Reminders.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/Return of the Obra Dinn.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/S4U 都市朋克2011与爱的重拳.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Volumes\/Preboot\/Cryptexes\/App\/System\/Applications\/Safari.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Steam.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/Steam.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/Steam Support Center.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Stocks.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/System Settings.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Telegram.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/TV.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/UTM.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/VA-11 Hall-A Cyberpunk Bartender Action.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/VoiceMemos.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/VPN.app.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/System\/Applications\/Weather.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/WeChat.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/Z.A.T.O.  I Love the World and Everything In It.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/东方红魔乡：新典　～ the Embodiment of Scarlet Devil..app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/冰柜里的尸体要多少钱？.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/晕晕电波症候群.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Users\/miikka\/Applications\/CrossOver\/Steam\/水烟水雾.app"
+      }
+    },
+    {
+      "app" : {
+        "_0" : "\/Applications\/Transocks.app"
+      }
+    },
+    {
+      "folder" : {
+        "_0" : {
+          "apps" : [
+            "\/Applications\/airi.app",
+            "\/System\/Applications\/Chess.app"
+          ],
+          "id" : "folder:88E45AEE-F992-4D59-9724-E9DA9A48D5AA",
+          "name" : "Folder"
+        }
+      }
+    }
+  ],
+  "hiddenApps" : [
+    "\/Applications\/轻虾导出助手.app"
+  ]
+}
