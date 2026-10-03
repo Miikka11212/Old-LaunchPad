@@ -35,7 +35,11 @@ if restore {
     let backup = try PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
     let spotlight = backup["spotlight64"] as! [String: Any]
     if spotlight["present"] as? Bool == true { shortcuts["64"] = spotlight["value"] }
-    else { shortcuts.removeValue(forKey: "64") }
+    else {
+        // The original absence of an override means Spotlight's default is on.
+        // Set it explicitly so macOS also clears its cached disabled registration.
+        shortcuts["64"] = ["enabled": true, "value": ["type": "standard", "parameters": [32, 49, 1048576]]]
+    }
     try write(symbolicDomain, symbolicKey, shortcuts)
     for (domain, key) in gestureKeys {
         let previous = backup[domain] as! [String: Any]

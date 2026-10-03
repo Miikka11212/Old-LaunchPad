@@ -1416,40 +1416,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let launchpad = LaunchpadController()
     private var statusItem: NSStatusItem?
     private var hotKeyRef: EventHotKeyRef?
-    private var commandSpaceRef: EventHotKeyRef?
+    private var fallbackHotKeyRef: EventHotKeyRef?
     private var eventHandler: EventHandlerRef?
-    private let controls = SystemControlConnection()
-    private var controlsReady = false
-    private var trackpadReady = false
-    private var controlsRevision = 0
-    private var terminating = false
     private let shortcutStatus = NSMenuItem(title: "Command–Space: Starting…", action: nil, keyEquivalent: "")
-    private let pinchStatus = NSMenuItem(title: "Trackpad Gestures: Starting…", action: nil, keyEquivalent: "")
-    private lazy var pinchMonitor = TrackpadPinchMonitor(
-        onPinch: { [weak self] in self?.launchpad.show() },
-        onSpread: { [weak self] in self?.launchpad.showDesktop() },
-        onStatus: { [weak self] ready in
-            guard let self, !self.terminating else { return }
-            self.trackpadReady = ready
-            self.updateSystemControls()
-        }
-    )
+    private let pinchStatus = NSMenuItem(title: "Four-Finger Pinch: Starting…", action: nil, keyEquivalent: "")
+    private var pinchMonitor: TrackpadPinchMonitor?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.regular)
         installMainMenu()
         installStatusItem()
         registerHotKey()
+        pinchMonitor = TrackpadPinchMonitor(onPinch: { [weak self] in
+            self?.launchpad.show()
+        }, onSpread: { [weak self] in
+            self?.launchpad.showDesktop()
+        }, onStatus: { [weak self] active in
+            self?.pinchStatus.title = active ? "Four-Finger Pinch & Spread: Ready" : "Four-Finger Gestures: Unavailable"
+        })
+        pinchMonitor?.start()
         launchpad.show()
-        Task {
-            do {
-                try await controls.start()
-                guard !terminating else { return }
-                controlsReady = true
-                registerCommandSpace()
-                pinchMonitor.start()
-            } catch { await controlSessionFailed(error) }
-        }
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -1457,64 +1443,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
-    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        guard !terminating else { return .terminateLater }
-        terminating = true
-        controlsReady = false
-        pinchMonitor.stop()
-        unregisterHotKeys()
-        Task {
-            await controls.stop()
-            sender.reply(toApplicationShouldTerminate: true)
-        }
-        return .terminateLater
-    }
-
     func applicationWillTerminate(_ notification: Notification) {
-        pinchMonitor.stop()
-        unregisterHotKeys()
-    }
-
-    private func unregisterHotKeys() {
-        if let commandSpaceRef { UnregisterEventHotKey(commandSpaceRef); self.commandSpaceRef = nil }
-        if let hotKeyRef { UnregisterEventHotKey(hotKeyRef); self.hotKeyRef = nil }
-        if let eventHandler { RemoveEventHandler(eventHandler); self.eventHandler = nil }
-    }
-
-    private func registerCommandSpace() {
-        guard eventHandler != nil else { return }
-        let status = RegisterEventHotKey(UInt32(kVK_Space), UInt32(cmdKey),
-            EventHotKeyID(signature: OSType(0x4F4C5044), id: 2),
-            GetApplicationEventTarget(), OptionBits(kEventHotKeyExclusive), &commandSpaceRef)
-        if status != noErr { NSLog("OldLaunchpad: Command–Space registration failed (%d)", status) }
-    }
-
-    private func updateSystemControls() {
-        guard controlsReady, !terminating else { return }
-        controlsRevision += 1
-        let revision = controlsRevision
-        let hotkey = commandSpaceRef != nil
-        let gestures = trackpadReady
-        Task {
-            do {
-                try await controls.update(hotkey: hotkey, gestures: gestures, revision: revision)
-                guard !terminating, controlsReady, revision == controlsRevision else { return }
-                shortcutStatus.title = hotkey ? "Command–Space: Active" : "Command–Space: macOS (shortcut unavailable)"
-                pinchStatus.title = gestures ? "Pinch: Launchpad · Spread: Desktop" : "Trackpad Gestures: macOS"
-            } catch { await controlSessionFailed(error) }
+        pinchMonitor?.stop()
+        if let hotKeyRef {
+            UnregisterEventHotKey(hotKeyRef)
         }
-    }
-
-    private func controlSessionFailed(_ error: Error) async {
-        guard !terminating else { return }
-        controlsReady = false
-        pinchMonitor.stop()
-        if let commandSpaceRef { UnregisterEventHotKey(commandSpaceRef); self.commandSpaceRef = nil }
-        await controls.stop()
-        shortcutStatus.title = "Command–Space: macOS"
-        pinchStatus.title = "Trackpad Gestures: macOS"
-        shortcutStatus.toolTip = error.localizedDescription
-        NSLog("OldLaunchpad: temporary controls unavailable: %@", error.localizedDescription)
+        if let fallbackHotKeyRef { UnregisterEventHotKey(fallbackHotKeyRef) }
+        if let eventHandler {
+            RemoveEventHandler(eventHandler)
+        }
     }
 
     private func installMainMenu() {
@@ -1524,7 +1461,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let desktop = appMenu.addItem(withTitle: "Show Desktop", action: #selector(showDesktopFromMenu), keyEquivalent: "")
         desktop.target = self
         appMenu.addItem(.separator())
-        appMenu.addItem(withTitle: "Quit & Restore macOS Controls", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appMenu.addItem(withTitle: "Quit OldLaunchpad", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu
         mainMenu.addItem(appItem)
         let editItem = NSMenuItem()
@@ -1553,9 +1490,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(.separator())
         menu.addItem(shortcutStatus)
         menu.addItem(pinchStatus)
-        menu.addItem(NSMenuItem(title: "Control–Option–Command–Space also opens Launchpad", action: nil, keyEquivalent: ""))
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Quit & Restore macOS Controls", action: #selector(quitFromMenuBar), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: "Quit OldLaunchpad", action: #selector(quitFromMenuBar), keyEquivalent: "q"))
         menu.items.forEach { $0.target = self }
 
         item.menu = menu
@@ -1597,7 +1533,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     &hotKeyID
                 )
 
-                if hotKeyID.signature == OSType(0x4F4C5044), [1, 2].contains(hotKeyID.id) {
+                if hotKeyID.signature == OSType(0x4F4C5044), hotKeyID.id == 1 || hotKeyID.id == 2 {
                     let delegate = Unmanaged<AppDelegate>.fromOpaque(userData).takeUnretainedValue()
                     Task { @MainActor in
                         delegate.launchpad.toggle()
@@ -1613,7 +1549,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         )
 
         guard handlerStatus == noErr else {
-            shortcutStatus.title = "Control–Option–Command–Space: Couldn’t start"
+            shortcutStatus.title = "Command–Space: Couldn’t start"
             NSLog("OldLaunchpad: hotkey handler failed (%d)", handlerStatus)
             return
         }
@@ -1621,19 +1557,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let hotKeyID = EventHotKeyID(signature: OSType(0x4F4C5044), id: 1)
         let status = RegisterEventHotKey(
             UInt32(kVK_Space),
-            UInt32(controlKey | optionKey | cmdKey),
+            UInt32(cmdKey),
             hotKeyID,
             GetApplicationEventTarget(),
-            0,
+            OptionBits(kEventHotKeyExclusive),
             &hotKeyRef
         )
-        shortcutStatus.title = status == noErr ? "Control–Option–Command–Space: Ready" : "Control–Option–Command–Space: Unavailable"
-        if status != noErr { NSLog("OldLaunchpad: shortcut registration failed (%d)", status) }
+        shortcutStatus.title = status == noErr ? "Command–Space: Ready" : "Command–Space: In use by another app"
+        if status != noErr { NSLog("OldLaunchpad: Command–Space registration failed (%d)", status) }
+        // Keep the previous shortcut available if another launcher claims Command–Space.
+        RegisterEventHotKey(UInt32(kVK_Space), UInt32(controlKey | optionKey | cmdKey),
+                            EventHotKeyID(signature: OSType(0x4F4C5044), id: 2),
+                            GetApplicationEventTarget(), 0, &fallbackHotKeyRef)
     }
-}
-
-if CommandLine.arguments.contains("--guard-system-controls") {
-    exit(SystemControlGuardian.run())
 }
 
 let app = NSApplication.shared

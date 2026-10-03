@@ -5,45 +5,29 @@ blurred desktop wallpaper, smooth page slides, and subtle opening/closing motion
 
 ## Run
 
-Double-click `OldLaunchpad.app`. It opens the launcher and temporarily takes over
-**Command + Space** and the four-finger trackpad gestures while it runs:
-
-- **Command + Space:** open or dismiss Launchpad.
-- **Four-finger pinch inward:** open Launchpad.
-- **Four-finger spread outward:** dismiss Launchpad and show the desktop.
-- **Control + Option + Command + Space:** an additional launcher shortcut.
-
-Its Dock icon and menu bar grid icon also open it. Escape or an empty-space click
-dismisses the launcher while keeping the app available in the menu bar.
-**Command + Q**, or **Quit & Restore macOS Controls** in its menu, quits the
-software and restores the previous macOS shortcuts and gestures.
+Double-click `OldLaunchpad.app` on the Desktop. While it is running,
+**Command + Space** toggles the launcher, a **four-finger pinch inward** opens it,
+and a **four-finger spread outward** closes it and invokes macOS Show Desktop.
+Its Dock icon, menu bar grid icon, and **Control + Option + Command + Space**
+also remain available. The menu bar reports whether the shortcut and trackpad
+listener are ready; **Show Desktop** is available from the menus as well.
 
 Development: `swift run OldLaunchpad`. Requires macOS 13+ and Swift 6+.
 
-### System controls
+### System shortcut setup
 
-No separate setup script or background service is needed. Each launch captures
-the current affected settings before changing them. A bundled helper restores
-them on quit or if the app process crashes; it then exits. An atomic recovery
-journal handles an interrupted helper on the next launch. Only one copy can
-manage the controls at a time, and unrelated keyboard settings are preserved.
+This Mac has been configured to release Spotlight's Command–Space and the system
+four-finger pinch to OldLaunchpad. Two-finger zoom and four-finger swipes retain
+their existing settings. To configure another Mac, run
+`swift Scripts/configure-system-shortcuts.swift`; to restore the saved original
+bindings, quit OldLaunchpad and run the same script with `--restore`.
+The script saves only the affected values and preserves other shortcuts.
 
-Trackpad handling uses an optional private macOS framework. If it is unavailable,
-the system gestures remain enabled. The listener pauses during sleep and restarts
-on wake. Command–Space is left to macOS if the app cannot register the shortcut.
-The menu bar icon displays which controls are active.
-
-The legacy `configure-system-shortcuts.swift` script is retained only for older
-manual installations. Do not run its setup mode with this version.
-
-### Package an app
-
-Run `./Scripts/package-app.sh` to create `outputs/OldLaunchpad.app` and
-`outputs/OldLaunchpad.zip`, including the icon and required third-party notice.
-Pass a different output directory as the first argument if desired. The app
-contains its runtime and helper; users do not need Swift or the source folder.
-The build targets the Mac's current architecture and is locally ad-hoc signed,
-not notarized for public distribution.
+macOS exposes no public global four-finger gesture API. The listener dynamically
+loads MultitouchSupport and restarts after wake; if it is unavailable, the keyboard
+shortcut still works. Finger positions are used only to recognize gestures and
+are not saved. Native Show Desktop uses the Dock's notification entry point.
+These system interfaces are private and may need updates with future macOS releases.
 
 ## Organize apps
 
@@ -111,11 +95,6 @@ rejection, and one-trigger-per-gesture checks. Run
 `./Scripts/test-trackpad-callback.sh` for the Swift 6 background callback
 regression check. Wallpaper decoding runs off the main thread so a slow image
 file cannot block opening the launcher or its shortcuts.
-
-Run `./Scripts/test-system-controls.sh` for preference restoration, independent
-shortcut/gesture ownership, duplicate-instance locking, interrupted-session
-recovery, partial write failures, and corrupt-journal protection. These checks
-use fake preferences and never change the Mac's settings.
 
 Build with `swift build -c release`. On prerelease toolchains with signing/dSYM
 issues in the default build engine, use `swift build --build-system native -c release`.
